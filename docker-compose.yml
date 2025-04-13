@@ -1,26 +1,28 @@
 services:
   backend: 
-    image: desdecerobackend:0.2
+    image: desdecerobackend:0.4.1
     build:
       context: ./config/django-image
     volumes:
       - ./src/django:/usr/app:delegated
     environment:
-      DB_HOST: postgres
+      DB_HOST: ${DB_HOST}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DJANGO_SU_NAME: ${DJANGO_SU_NAME}
+      DJANGO_SU_EMAIL: ${DJANGO_SU_EMAIL}
+      DJANGO_SU_PASSWORD: ${DJANGO_SU_PASSWORD}
     ports:
       - 8000:8000
     networks:
       - red
-    depends_on:
-      - postgres  # Esto asegura que el servicio de postgres esté inicializado antes de iniciar el backend
+    # Esto asegura que el servicio de postgres esté inicializado antes de iniciar el backend
   
   postgres:
     image: postgres:16-bullseye
     environment:
-      DB_HOST: postgres
+     
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
